@@ -46,6 +46,27 @@ syntax on
 " switch colorscheme based on whether we're in gvim or not
 if has("gui_running")
     colorscheme distinguished
+    if has("gui_gtk2")
+        set guifont=Droid\ Sans\ Mono\ 7.5
+    elseif has("gui_win32")
+        set guifont=Bitstream\ Vera\ Sans\ Mono:h7.5:cDefault
+    endif
+    
+    " no menu
+    set guioptions-=m
+    " no toolbar
+    set guioptions-=T
+    
+    " no left scrollbar
+    set guioptions-=l
+    " no left scrollbar when in vertical split
+    set guioptions-=L
+    " no right scrollbar
+    set guioptions-=r
+    " no right scrollbar when in vertical split
+    set guioptions-=R
+    " no bottom scrollbar
+    set guioptions-=b
 else
     colorscheme jellybeans
 endif
