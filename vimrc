@@ -122,20 +122,22 @@ if executable("p4")
     " seems more efficent.
 
     " Tracker to tell us if we are auto-loading a p4 edit or not
-    let s:IgnoreChange=0
+    let b:PerforceIgnoreChange=0
+    let b:PerforceAutoEditMode=0
 
     function! PerforceOpen()
         " tell the FileChangedShell autocmd that we're auto
         " opening a file, so that it can ignore the prompt.
-        let s:IgnoreChange=1
+        let b:PerforceIgnoreChange=1
         let l:output = system("p4 edit " . expand("%"))
 
         if match(l:output, "is not under client's root") < 0
             " set the file to writeable
+            let b:PerforceAutoEditMode=1
             setlocal noreadonly
             setlocal writeany
         else
-            s:IgnoreChange=0
+            b:PerforceIgnoreChange=0
         endif
     endfunction
 
@@ -144,6 +146,7 @@ if executable("p4")
 
         if match(l:output, "is not under client's root") < 0
             edit!
+            let b:PerforceAutoEditMode=0
             setlocal readonly
             setlocal nowriteany
         endif
@@ -164,9 +167,9 @@ if executable("p4")
     " don't have to press 'L' every time a file is auto opened
     "for us, which would be a pain).
     au FileChangedShell *
-        \ if 1 == s:IgnoreChange |
+        \ if 1 == b:IgnoreChange |
         \       let v:fcs_choice="" |
-        \       let s:IgnoreChange=0 |
+        \       let b:PerforceIgnoreChange=0 |
         \ else |
         \       let v:fcs_choice="ask"
         \ endif
