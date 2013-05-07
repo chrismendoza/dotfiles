@@ -173,10 +173,6 @@ if executable("p4")
         endif
     endfunction
 
-    " Make sure .esp files are recognized as perl (even though
-    " they sometimes contain html)
-    au BufNewFile,BufRead *.esp set filetype=perl
-
     " When a user leaves insert mode, automatically open the
     " file for edit if the buffer has been modified (something
     " for my sanity!)
@@ -208,6 +204,10 @@ let html_extended_events=1
 let perl_include_pod = 1
 let perl_extended_vars = 1
 let perl_sync_dist = 250
+
+" Make sure .esp files are recognized as perl (even though
+" they sometimes contain html)
+au BufNewFile,BufRead *.esp set filetype=perl
 
 " Python
 
