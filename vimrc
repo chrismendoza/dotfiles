@@ -1,25 +1,59 @@
-" not compatible with vi
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" not compatible with old vi
 set nocompatible
 
-" Enable pathogen
-execute pathogen#infect()
+" Enable file type plugins
+filetype plugin on
+filetype indent on
 
-" Write the backup and swp files to a tmp dir instead (prevents lag)
-set backupdir=~/.vim/tmp
-set directory=~/.vim/tmp
-set nowritebackup
+" Enable the mouse when available
+if has("mouse")
+    set mouse=a
+endif
 
+" With a map leader it's possible to do extra key combinations
+" like <leader>w saves the current file
+let mapleader=','
+let g:mapleader=','
+
+" Set utf8 as the standard encoding
+set encoding=utf8
+
+" Prefer Unix as the standard filetype
+set ffs=unix,dos,mac
+
+" Speed up terminal
+set ttyfast
+
+" Minimize the amount of redrawing
+set lazyredraw
+
+" Faster saving (2 keys instead of 3, and I don't have to reach)
+map <leader>w :w!<CR>
+" Open a new tab!
+map <C-T> :tabnew<CR>:E<CR>
+" Source the current file (useful when editing this file)
+map <leader>s :source %<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Colors and Fonts
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Turn on syntax highlighting
 syntax on
-" Turn on filetype recognition
-filetype plugin on
-" set colorscheme
-set background=dark
-colorscheme solarized
-" Turn on mouse
-set mouse=a
 
-" Incremental search
+" switch colorscheme based on whether we're in gvim or not
+if has("gui_running")
+    colorscheme distinguished
+else
+    colorscheme jellybeans
+endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => VIM user interface
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Enable incremental search
 set incsearch
 " Ignore case
 set ignorecase
@@ -32,38 +66,126 @@ set hlsearch
 set number
 " Show ruler
 set ruler
-" Don't wrap lines
-set nowrap
 " Highlight cursor line
 set cursorline
 " Show matching parenthesis
 set showmatch
+" Don't word wrap lines
+set nowrap
+" Backspace functions like normal (indent, eol, start)
+set backspace=2
 
-" insert tabs on the start of a line, not tabstop
-set smarttab
-" expand tabs to spaces
-set expandtab
-" set tab width
-set softtabstop=4
-set tabstop=4
-set shiftwidth=4
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Files, backups and undo
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set nobackup
+set nowritebackup
+set noswapfile
 
-" Speed up the terminal
-set ttyfast
-" only redraw when necessary
-set lazyredraw
-
-" Always show a status line
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Status line
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Make statusbar always visible
 set laststatus=2
-" Fancy status line
-set statusline=%F%m%r%h%w\ [TYPE=%Y\ %{strlen(&fenc)?&fenc:'none'}\ %{&ff}]\ [COL=%c]\ [ROW=%l/%L\ (%p%%)]
+" Status line format (needs work!)
+:set statusline=%F%m%r%h%w\ [TYPE=%Y\ %{strlen(&fenc)?&fenc:'none'}\ %{&ff}]\ [COL=%c]\ [ROW=%l/%L\ (%p%%)]
 
-" Ctrl-t opens a new tab
-map <C-t> :tabnew<cr>
-imap <C-t> <ESC>:tabnew<cr>
-nmap <C-t> :tabnew<cr>
-imap <C-tab> <C-x><C-o>
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Text, tab and indent related
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use spaces instead of tabs
+set expandtab
 
-" F5 will comment out a block of lines, F6 uncomments them
-map <F5> :s/^/#/<cr>:noh<cr>
-map <F6> :s/^#//<cr>:noh<cr>
+" Be smart when using tabs ;)
+set smarttab
+
+" 1 tab == 4 spaces
+set shiftwidth=4
+set tabstop=4
+
+" Automatically indent lines as needed
+set autoindent
+" Smart indent
+set smartindent
+" Don't wrap lines
+set nowrap
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Version control tools
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if executable("p4")
+    " perforce is a bit of a pain when it comes to opening
+    " files, if it is available, go ahead and define, I use this
+    " at work, and I probably should modify it to check if the
+    " file is actually part of perforce before trying to call
+    " p4 edit on the file, but trying to open the file in p4
+    " seems more efficent.
+
+    " Tracker to tell us if we are auto-loading a p4 edit or not
+    let s:IgnoreChange=0
+
+    function! PerforceOpen()
+        " tell the FileChangedShell autocmd that we're auto
+        " opening a file, so that it can ignore the prompt.
+        let s:IgnoreChange=1
+        let l:output = system("p4 edit " . expand("%"))
+
+        if match(l:output, "is not under client's root") < 0
+            " set the file to writeable
+            setlocal noreadonly
+            setlocal writeany
+        else
+            s:IgnoreChange=0
+        endif
+    endfunction
+
+    function! PerforceRevert()
+        let l:output = system("p4 revert " . expand("%"))
+
+        if match(l:output, "is not under client's root") < 0
+            edit!
+            setlocal readonly
+            setlocal nowriteany
+        endif
+    endfunction
+
+    " Make sure .esp files are recognized as perl (even though
+    " they sometimes contain html)
+    au BufNewFile,BufRead *.esp set filetype=perl
+
+    " When a user leaves insert mode, automatically open the
+    " file for edit if the buffer has been modified (something
+    " for my sanity!)
+    au InsertLeave * if &readonly && &modified |
+        \ call PerforceOpen()
+
+    " If the above autocmd has called PerforceOpen(), ignore
+    " the load from disk prompt otherwise show it (this is so we
+    " don't have to press 'L' every time a file is auto opened
+    "for us, which would be a pain).
+    au FileChangedShell *
+        \ if 1 == s:IgnoreChange |
+        \       let v:fcs_choice="" |
+        \       let s:IgnoreChange=0 |
+        \ else |
+        \       let v:fcs_choice="ask"
+        \ endif
+
+    map <leader>r :call PerforceRevert()<CR>
+endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Language Tools and options
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" HTML
+let html_extended_events=1
+
+" Perl
+let perl_include_pod = 1
+let perl_extended_vars = 1
+let perl_sync_dist = 250
+
+" Python
+
+" PHP
+
