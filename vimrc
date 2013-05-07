@@ -188,7 +188,7 @@ if executable("p4")
     " don't have to press 'L' every time a file is auto opened
     "for us, which would be a pain).
     au FileChangedShell *
-        \ if 1 == b:IgnoreChange |
+        \ if 1 == b:PerforceIgnoreChange |
         \       let v:fcs_choice="" |
         \       let b:PerforceIgnoreChange=0 |
         \ else |
