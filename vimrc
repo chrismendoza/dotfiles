@@ -111,7 +111,7 @@ set showcmd
 set showmode
 " Display tabs and trailing spaces visually
 set list
-set listchars=tab:▸\
+set listchars=tab:▸\ 
 set listchars+=trail:·
 " set listchars+=eol:¬
 " set listchars+=nbsp:_
