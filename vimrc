@@ -13,6 +13,9 @@ call vundle#rc()
 " Vundle
 Bundle 'gmarik/vundle'
 
+" Syntax file bundles
+Bundle 'vim-perl/vim-perl'
+
 " color scheme bundles
 Bundle 'nanotech/jellybeans.vim'
 Bundle 'Lokaltog/vim-distinguished'
