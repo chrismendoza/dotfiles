@@ -13,12 +13,20 @@ call vundle#rc()
 " Vundle
 Bundle 'gmarik/vundle'
 
+" File browsing utils
+Bundle 'scrooloose/nerdtree'
+Bundle 'jistr/vim-nerdtree-tabs'
+
+" Syntax checking
+Bundle 'scrooloose/syntastic'
+
 " Syntax file bundles
 Bundle 'vim-perl/vim-perl'
 
 " color scheme bundles
 Bundle 'nanotech/jellybeans.vim'
 Bundle 'Lokaltog/vim-distinguished'
+Bundle 'jpo/vim-railscasts-theme'
 
 " Enable file type plugins
 filetype plugin on
