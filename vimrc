@@ -51,12 +51,12 @@ if has("gui_running")
     elseif has("gui_win32")
         set guifont=Bitstream\ Vera\ Sans\ Mono:h7.5:cDefault
     endif
-    
+
     " no menu
     set guioptions-=m
     " no toolbar
     set guioptions-=T
-    
+
     " no left scrollbar
     set guioptions-=l
     " no left scrollbar when in vertical split
@@ -93,8 +93,32 @@ set cursorline
 set showmatch
 " Don't word wrap lines
 set nowrap
-" Backspace functions like normal (indent, eol, start)
-set backspace=2
+" Backspace functions like normal
+set backspace=indent,eol,start
+" Show incomplete commands at bottom
+set showcmd
+" Show the current mode
+set showmode
+" Display tabs and trailing spaces visually
+set list
+set listchars=tab:▸\ 
+set listchars+=trail:·
+" set listchars+=eol:¬
+" set listchars+=nbsp:_
+" Scroll when 8 lines away from margin
+set scrolloff=8
+" Side scroll when 15 columns away from edge
+set sidescrolloff=15
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => VIM user interface
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" let syntax dictate folds
+set foldmethod=syntax
+" deepest fold is 3 levels
+set foldnestmax=3
+" don't fold by default
+set nofoldenable
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
@@ -213,3 +237,11 @@ au BufNewFile,BufRead *.esp set filetype=perl
 
 " PHP
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Completion
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set wildmode=list:longest
+set wildmenu
+set wildignore=*.o,*.obj,*.pyc,*~
+set wildignore+=*vim/backups*
+set wildignore+=*.png,*.jpg,*.gif
