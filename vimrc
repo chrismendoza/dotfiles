@@ -3,6 +3,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " not compatible with old vi
 set nocompatible
+
 " Temporarily disable filetype plugin (needed for vundle)
 filetype off
 
@@ -15,7 +16,7 @@ source ~/.vim/bundles.vim
 filetype plugin on
 filetype indent on
 
-" Enable the mouse when available
+" Enable the mouse when vim was compiled with it available
 if has("mouse")
     set mouse=a
 endif
@@ -40,11 +41,12 @@ set lazyredraw
 " Faster saving (2 keys instead of 3, and I don't have to reach)
 map <leader>w :w!<CR>
 " Open a new tab!
-map <C-t> :tabnew<CR>:E<CR>
+map <leader>t :tabnew<CR>
 " Source the current file (useful when editing this file)
 map <leader>s :source %<CR>
 " toggle NERDTree
-map <leader>ntt :NERDTreeTabsToggle<CR>
+map <leader>nt :NERDTreeToggle<CR>
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -111,7 +113,7 @@ set showcmd
 set showmode
 " Display tabs and trailing spaces visually
 set list
-set listchars=tab:▸\ 
+set listchars=tab:▸\
 set listchars+=trail:·
 " set listchars+=eol:¬
 " set listchars+=nbsp:_
@@ -215,6 +217,6 @@ set wildignore+=*.pyc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Custom vim instructions & includes
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if filereadable('~/.vim/custom.vim')
+if filereadable(expand('~/.vim/custom.vim'))
     source ~/.vim/custom.vim
 endif
