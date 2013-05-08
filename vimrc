@@ -1,8 +1,18 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Includes
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+runtime bundle/vim-pathogen/autoload/pathogen.vim
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " not compatible with old vi
 set nocompatible
+" Temporarily disable filetype plugin (needed for pathogen)
+filetype off
+
+" Load pathogen!
+execute pathogen#infect()
 
 " Enable file type plugins
 filetype plugin on
@@ -42,6 +52,8 @@ map <leader>s :source %<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Turn on syntax highlighting
 syntax on
+" Force 256 color mode (probably a bad idea, but meh)
+set t_Co=256
 
 " switch colorscheme based on whether we're in gvim or not
 if has("gui_running")
