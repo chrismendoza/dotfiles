@@ -1,18 +1,21 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Includes
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-runtime bundle/vim-pathogen/autoload/pathogen.vim
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " not compatible with old vi
 set nocompatible
-" Temporarily disable filetype plugin (needed for pathogen)
+" Temporarily disable filetype plugin (needed for vundle)
 filetype off
 
-" Load pathogen!
-execute pathogen#infect()
+" Load vundle
+set rtp+=~/.vim/bundle/vundle
+call vundle#rc()
+
+" Vundle
+Bundle 'gmarik/vundle'
+
+" color scheme bundles
+Bundle 'nanotech/jellybeans.vim'
+Bundle 'Lokaltog/vim-distinguished'
 
 " Enable file type plugins
 filetype plugin on
