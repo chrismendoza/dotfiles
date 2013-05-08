@@ -9,6 +9,8 @@ filetype off
 " Load vundle
 set rtp+=~/.vim/bundle/vundle
 call vundle#rc()
+" necessary because my work system git isn't compiled for https
+let g:vundle_default_git_proto='git'
 
 " Vundle
 Bundle 'gmarik/vundle'
@@ -23,10 +25,24 @@ Bundle 'scrooloose/syntastic'
 " Syntax file bundles
 Bundle 'vim-perl/vim-perl'
 
-" color scheme bundles
+" Colorscheme bundles
 Bundle 'nanotech/jellybeans.vim'
 Bundle 'Lokaltog/vim-distinguished'
 Bundle 'jpo/vim-railscasts-theme'
+Bundle 'trapd00r/neverland-vim-theme'
+Bundle 'sjl/badwolf'
+
+" Supertab completion
+Bundle 'ervandew/supertab'
+" Surround delete/change/add quotes, parentheses, etc.
+Bundle 'tpope/vim-surround'
+" ctrp - fuzzy file/buffer/mru/tag finder
+Bundle 'kien/ctrlp.vim'
+" nerdcommenter - easier commenting out
+Bundle 'scrooloose/nerdcommenter'
+" fugitive - git wrapper
+Bundle 'tpope/vim-fugitive'
+
 
 " Enable file type plugins
 filetype plugin on
@@ -60,6 +76,8 @@ map <leader>w :w!<CR>
 map <C-T> :tabnew<CR>:E<CR>
 " Source the current file (useful when editing this file)
 map <leader>s :source %<CR>
+" toggle NERDTree
+map <leader>ntt :NERDTreeTabsToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -68,10 +86,11 @@ map <leader>s :source %<CR>
 syntax on
 " Force 256 color mode (probably a bad idea, but meh)
 set t_Co=256
+" colors!
+colorscheme badwolf
 
-" switch colorscheme based on whether we're in gvim or not
+" gvim options
 if has("gui_running")
-    colorscheme distinguished
     if has("gui_gtk2")
         set guifont=Droid\ Sans\ Mono\ 7.5
     elseif has("gui_win32")
@@ -93,8 +112,6 @@ if has("gui_running")
     set guioptions-=R
     " no bottom scrollbar
     set guioptions-=b
-else
-    colorscheme jellybeans
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -127,7 +144,7 @@ set showcmd
 set showmode
 " Display tabs and trailing spaces visually
 set list
-set listchars=tab:▸\ 
+set listchars=tab:▸\
 set listchars+=trail:·
 " set listchars+=eol:¬
 " set listchars+=nbsp:_
