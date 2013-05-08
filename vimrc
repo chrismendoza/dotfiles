@@ -9,40 +9,7 @@ filetype off
 " Load vundle
 set rtp+=~/.vim/bundle/vundle
 call vundle#rc()
-" necessary because my work system git isn't compiled for https
-let g:vundle_default_git_proto='git'
-
-" Vundle
-Bundle 'gmarik/vundle'
-
-" File browsing utils
-Bundle 'scrooloose/nerdtree'
-Bundle 'jistr/vim-nerdtree-tabs'
-
-" Syntax checking
-Bundle 'scrooloose/syntastic'
-
-" Syntax file bundles
-Bundle 'vim-perl/vim-perl'
-
-" Colorscheme bundles
-Bundle 'nanotech/jellybeans.vim'
-Bundle 'Lokaltog/vim-distinguished'
-Bundle 'jpo/vim-railscasts-theme'
-Bundle 'trapd00r/neverland-vim-theme'
-Bundle 'sjl/badwolf'
-
-" Supertab completion
-Bundle 'ervandew/supertab'
-" Surround delete/change/add quotes, parentheses, etc.
-Bundle 'tpope/vim-surround'
-" ctrp - fuzzy file/buffer/mru/tag finder
-Bundle 'kien/ctrlp.vim'
-" nerdcommenter - easier commenting out
-Bundle 'scrooloose/nerdcommenter'
-" fugitive - git wrapper
-Bundle 'tpope/vim-fugitive'
-
+source ~/.vim/bundles.vim
 
 " Enable file type plugins
 filetype plugin on
@@ -73,7 +40,7 @@ set lazyredraw
 " Faster saving (2 keys instead of 3, and I don't have to reach)
 map <leader>w :w!<CR>
 " Open a new tab!
-map <C-T> :tabnew<CR>:E<CR>
+map <C-t> :tabnew<CR>:E<CR>
 " Source the current file (useful when editing this file)
 map <leader>s :source %<CR>
 " toggle NERDTree
@@ -153,11 +120,17 @@ set scrolloff=8
 " Side scroll when 15 columns away from edge
 set sidescrolloff=15
 
+" Resize splits when the window is resized
+au VimResized * exe "normal! \<c-w>="
+
+" share clipboard with system
+set clipboard=unnamed
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => VIM user interface
+" => folding
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" let syntax dictate folds
-set foldmethod=syntax
+" let indention dictate folds
+set foldmethod=indent
 " deepest fold is 3 levels
 set foldnestmax=3
 " don't fold by default
@@ -202,65 +175,8 @@ set nowrap
 " => Version control tools
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if executable("p4")
-    " perforce is a bit of a pain when it comes to opening
-    " files, if it is available, go ahead and define, I use this
-    " at work, and I probably should modify it to check if the
-    " file is actually part of perforce before trying to call
-    " p4 edit on the file, but trying to open the file in p4
-    " seems more efficent.
-
-    " Tracker to tell us if we are auto-loading a p4 edit or not
-    let b:PerforceIgnoreChange=0
-    let b:PerforceAutoEditMode=0
-
-    function! PerforceOpen()
-        " tell the FileChangedShell autocmd that we're auto
-        " opening a file, so that it can ignore the prompt.
-        let b:PerforceIgnoreChange=1
-        let l:output = system("p4 edit " . expand("%"))
-
-        if match(l:output, "is not under client's root") < 0
-            " set the file to writeable
-            let b:PerforceAutoEditMode=1
-            setlocal noreadonly
-            setlocal writeany
-        else
-            b:PerforceIgnoreChange=0
-        endif
-    endfunction
-
-    function! PerforceRevert()
-        let l:output = system("p4 revert " . expand("%"))
-
-        if match(l:output, "is not under client's root") < 0
-            edit!
-            let b:PerforceAutoEditMode=0
-            setlocal readonly
-            setlocal nowriteany
-        endif
-    endfunction
-
-    " When a user leaves insert mode, automatically open the
-    " file for edit if the buffer has been modified (something
-    " for my sanity!)
-    au InsertLeave * if &readonly && &modified |
-        \ call PerforceOpen()
-
-    " If the above autocmd has called PerforceOpen(), ignore
-    " the load from disk prompt otherwise show it (this is so we
-    " don't have to press 'L' every time a file is auto opened
-    "for us, which would be a pain).
-    au FileChangedShell *
-        \ if 1 == b:PerforceIgnoreChange |
-        \       let v:fcs_choice="" |
-        \       let b:PerforceIgnoreChange=0 |
-        \ else |
-        \       let v:fcs_choice="ask"
-        \ endif
-
-    map <leader>r :call PerforceRevert()<CR>
+    source ~/.vim/perforce.vim
 endif
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Language Tools and options
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -276,15 +192,29 @@ let perl_sync_dist = 250
 " they sometimes contain html)
 au BufNewFile,BufRead *.esp set filetype=perl
 
-" Python
-
-" PHP
+" Get jinja filetype selection working correctly for *.jinja.html files.
+au BufNewFile,BufReadPost *.jinja.html setlocal filetype=htmljinja
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Completion
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set wildmode=list:longest
+set wildmode=longest,list:longest,full
 set wildmenu
-set wildignore=*.o,*.obj,*.pyc,*~
-set wildignore+=*vim/backups*
-set wildignore+=*.png,*.jpg,*.gif
+
+" ignore version control files
+set wildignore+=.hg,.git,.svn
+" ignore latex temp files
+set wildignore+=*.aux,*.out,*.toc
+" ignore compiled objects
+set wildignore+=*.o,*.obj,*.so,*.exe,*.dll,*.manifest
+" ignore compiled spelling lists
+set wildignore+=*.spl
+" ignore python byte code
+set wildignore+=*.pyc
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Custom vim instructions & includes
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if filereadable('~/.vim/custom.vim')
+    source ~/.vim/custom.vim
+endif
