@@ -3,7 +3,6 @@ Bundle 'gmarik/vundle'
 
 " File browsing utils
 Bundle 'scrooloose/nerdtree'
-Bundle 'jistr/vim-nerdtree-tabs'
 
 " Syntax checking
 Bundle 'scrooloose/syntastic'
