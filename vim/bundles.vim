@@ -27,14 +27,13 @@ Bundle 'Lokaltog/vim-distinguished'
 Bundle 'jpo/vim-railscasts-theme'
 Bundle 'trapd00r/neverland-vim-theme'
 Bundle 'sjl/badwolf'
+Bundle 'acarapetis/vim-github-theme'
 
 " Supertab completion
 Bundle 'ervandew/supertab'
-" Surround delete/change/add quotes, parentheses, etc.
-" Bundle 'tpope/vim-surround'
-" ctrp - fuzzy file/buffer/mru/tag finder
-" Bundle 'kien/ctrlp.vim'
 " nerdcommenter - easier commenting out
-" Bundle 'scrooloose/nerdcommenter'
+Bundle 'scrooloose/nerdcommenter'
 " fugitive - git wrapper
 Bundle 'tpope/vim-fugitive'
+" Allow use of gui colorschemes in the terminal
+Bundle 'vim-scripts/CSApprox'
