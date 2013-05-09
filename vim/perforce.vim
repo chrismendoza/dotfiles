@@ -1,9 +1,11 @@
-" perforce is a bit of a pain when it comes to opening
-" files, if it is available, go ahead and define, I use this
-" at work, and I probably should modify it to check if the
-" file is actually part of perforce before trying to call
-" p4 edit on the file, but trying to open the file in p4
-" seems more efficent.
+" perforce is a bit of a pain when it comes to editing
+" files (have to explicitly tell perforce I'm going to
+" edit).  I use this script at work to ease my pain.
+"
+" I probably should modify it to check if the file is
+" actually part of perforce before trying to call p4 edit
+" on the file, but trying to open the file in p4 seems
+" more efficent.
 
 " Tracker to tell us if we are auto-loading a p4 edit or not
 let b:PerforceIgnoreChange=0
