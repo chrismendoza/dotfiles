@@ -10,6 +10,7 @@ filetype off
 " Load vundle
 set rtp+=~/.vim/bundle/vundle
 call vundle#rc()
+" Load the bundles list from an external file
 source ~/.vim/bundles.vim
 
 " Enable file type plugins
