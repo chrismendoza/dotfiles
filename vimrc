@@ -113,8 +113,8 @@ set showcmd
 set showmode
 " Display tabs and trailing spaces visually
 set list
-set listchars=tab:▒▒
-set listchars+=trail:▒
+set listchars=tab:»·
+set listchars+=trail:·
 
 " Scroll when 8 lines away from margin
 set scrolloff=8
