@@ -56,7 +56,7 @@ syntax on
 " Force 256 color mode (probably a bad idea, but meh)
 set t_Co=256
 " colors!
-colorscheme badwolf
+colorscheme railscasts
 
 " gvim options
 if has("gui_running")
@@ -113,10 +113,9 @@ set showcmd
 set showmode
 " Display tabs and trailing spaces visually
 set list
-set listchars=tab:▸\
-set listchars+=trail:·
-" set listchars+=eol:¬
-" set listchars+=nbsp:_
+set listchars=tab:▒▒
+set listchars+=trail:▒
+
 " Scroll when 8 lines away from margin
 set scrolloff=8
 " Side scroll when 15 columns away from edge
