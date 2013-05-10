@@ -217,5 +217,12 @@ set wildignore+=*.pyc
 " => Custom vim instructions & includes
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if filereadable(expand('~/.vim/custom.vim'))
+    " If you have any custom overrides, you can place them in 
+    " the ~/.vim/custom.vim file, and they will be loaded
+    " automatically.  For example, where I work I don't have
+    " https support in git, so I have to turn it off for the
+    " vundle plugin, but since I don't want that change to impact
+    " my other machines, it gets placed in custom.vim, which
+    " is not sync'd back to the repository with everything else.
     source ~/.vim/custom.vim
 endif
