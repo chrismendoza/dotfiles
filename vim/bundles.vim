@@ -28,6 +28,7 @@ Bundle 'jpo/vim-railscasts-theme'
 Bundle 'trapd00r/neverland-vim-theme'
 Bundle 'sjl/badwolf'
 Bundle 'acarapetis/vim-github-theme'
+Bundle 'altercation/vim-colors-solarized'
 
 " Supertab completion
 Bundle 'ervandew/supertab'

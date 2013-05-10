@@ -61,7 +61,7 @@ colorscheme railscasts
 " gvim options
 if has("gui_running")
     if has("gui_gtk2")
-        set guifont=Droid\ Sans\ Mono\ 7.5
+        set guifont=Ubuntu\ Mono\ Bold\ 7.5
     elseif has("gui_win32")
         set guifont=Bitstream\ Vera\ Sans\ Mono:h7.5:cDefault
     endif
