@@ -191,7 +191,7 @@ let perl_sync_dist = 250
 
 " Make sure .esp files are recognized as perl (even though
 " they sometimes contain html)
-au BufNewFile,BufRead *.esp set filetype=perl
+au BufNewFile,BufReadPost *.esp setlocal filetype=perl
 
 " Get jinja filetype selection working correctly for *.jinja.html files.
 au BufNewFile,BufReadPost *.jinja.html setlocal filetype=htmljinja
