@@ -56,4 +56,5 @@ au FileChangedShell *
     \       let v:fcs_choice="ask"
     \ endif
 
+" Reverts the file locally when <leader>r is hit.
 map <leader>r :call PerforceRevert()<CR>
